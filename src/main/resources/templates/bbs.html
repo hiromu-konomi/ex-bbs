@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:action="@{/bbs/insert}" method="post">
+		<table>
+			<tr>
+				<td>投稿者名：</td>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td>投稿内容：</td>
+				<td><textarea rows="10" cols="30" name="comment"></textarea></td>
+			</tr>
+		</table>
+	</form>
+	<hr>
+</body>
+</html>
