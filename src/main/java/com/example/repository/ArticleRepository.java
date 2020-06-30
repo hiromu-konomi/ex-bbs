@@ -42,7 +42,7 @@ public class ArticleRepository {
 	public List<Article> findAll(){
 		String sql = "SELECT a.id AS id,a.name AS name,a.content AS content,c.id AS com_id,c.name AS com_name,c.content "
 				+ "AS com_content,c.article_id AS article_id FROM articles AS a LEFT OUTER JOIN comments AS c "
-				+ "ON a.id=c.article_id ORDER BY id DESC";
+				+ "ON a.id=c.article_id ORDER BY id DESC,com_id DESC";
 		
 		List<Article> artList = template.query(sql, ARTICLE_ROW_MAPPER);
 		

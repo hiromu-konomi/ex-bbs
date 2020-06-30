@@ -2,10 +2,8 @@ package com.example.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,38 +27,26 @@ public class JoinService {
 	public List<Article> findAll() {
 		List<Article> joinList = artRep.findAll();
 
-		Set<Integer> articleIdSet = new HashSet<>();
 		Map<Integer, Article> map = new HashMap<>();
 
 		for (Article a : joinList) {
-			articleIdSet.add(a.getId());
-		}
-
-		for (Article a : joinList) {
-			for (Integer id : articleIdSet) {
-				if (a.getId().equals(id)) {
-					map.put(id, a);
-				}
-			}
+			map.put(a.getId(), a);
 		}
 
 		List<Article> artList = new ArrayList<>(map.values());
-		
-		
-		List<Comment> comList = new ArrayList<>();
-		
 
-		for (Article joinart : joinList) {
-			comList.add(joinart.getCommentList().get(0));
+		List<Comment> comList = new ArrayList<>();
+
+		for (Article a : joinList) {
+			comList.add(a.getCommentList().get(0));
 		}
-		
+
 		artList.forEach(art -> art.getCommentList().clear());
-		
-		
+
 		for (Comment comment : comList) {
 			for (Article a : artList) {
 				if (comment.getArticleId().equals(a.getId())) {
-					a.setCommentList(comList);
+					a.getCommentList().add(comment);
 				}
 			}
 		}
