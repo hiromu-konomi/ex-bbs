@@ -23,22 +23,37 @@ public class ArticleService {
 	private CommentRepository comRep;
 
 	public List<Article> findAll() {
-		List<Article> artList = artRep.findAll();
+		List<Article> joinList = artRep.findAll();
 
 		Article art = new Article();
 		List<Comment> comList = new ArrayList<>();
 		List<Article> artList2 = new ArrayList<>();
 		int count = 0;
 
-		for (Article a : artList) {
+		for (int i = 0; i < joinList.size(); i++) {
 			if (count == 0) {
-				comList.addAll(a.getCommentList());
-				art.setId(a.getId());
-				art.setName(a.getName());
-				art.setContent(a.getContent());
+				art.setId(joinList.get(i).getId());
+				art.setName(joinList.get(i).getName());
+				art.setContent(joinList.get(i).getContent());
+				comList.addAll(joinList.get(i).getCommentList());
 				count++;
-			} else if(a.getId() != comList.get(count).getArticleId()) {
-				
+			} else if (joinList.get(i).getId() == joinList.get(i - 1).getId()) {
+				comList.addAll(joinList.get(i).getCommentList());
+				art.setCommentList(comList);
+			} else {
+				art.setCommentList(comList);
+				artList2.add(art);
+				art = new Article();
+				comList = new ArrayList<>();
+				art.setId(joinList.get(i).getId());
+				art.setName(joinList.get(i).getName());
+				art.setContent(joinList.get(i).getContent());
+				comList.addAll(joinList.get(i).getCommentList());
+				art.setCommentList(comList);
+			}
+			if(i == joinList.size() - 1) {
+				art.setCommentList(comList);
+				artList2.add(art);
 			}
 		}
 

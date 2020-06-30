@@ -13,13 +13,14 @@ import com.example.domain.Comment;
 import com.example.form.ArticleForm;
 import com.example.form.CommentForm;
 import com.example.service.ArticleService;
+import com.example.service.JoinService;
 
 @Controller
 @RequestMapping("/bbs")
 public class ArticleController {
 
 	@Autowired
-	private ArticleService service;
+	private JoinService service;
 	
 	@ModelAttribute
 	public ArticleForm setArticleForm() {
@@ -67,8 +68,8 @@ public class ArticleController {
 	
 	@RequestMapping("/delete")
 	public String deleteArticle(Integer id, Model model) {
-		service.deleteArticle(id);
 		service.deleteComment(id);
+		service.deleteArticle(id);
 		
 		return index(model);
 	}
