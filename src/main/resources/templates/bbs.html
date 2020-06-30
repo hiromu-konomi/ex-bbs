@@ -2,21 +2,46 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>掲示板</title>
 </head>
 <body>
-	<form th:action="@{/bbs/insert}" method="post">
+	<form th:action="@{/bbs/insert-article}" method="post" th:object="${articleForm}">
 		<table>
 			<tr>
 				<td>投稿者名：</td>
-				<td><input type="text" name="name"></td>
+				<td><input type="text" name="name" th:field="*{name}"></td>
 			</tr>
 			<tr>
 				<td>投稿内容：</td>
-				<td><textarea rows="10" cols="30" name="comment"></textarea></td>
+				<td> <textarea rows="10" cols="30" name="comment" th:field="*{content}"></textarea></td>
 			</tr>
-		</table>
+		</table><br>
+		<button>記事投稿</button>
 	</form>
 	<hr>
+	<div th:each="art:${artList}">
+		投稿者名：<span th:text="${art.name}"></span><br>
+		投稿内容：<br>
+		<span th:text="${art.content}"></span><br>
+		<form th:action="@{/bbs/delete}" method="post">
+			<input type="hidden" name=id th:value="${art.id}">
+			<button>記事削除</button>
+		</form><br>
+		<div th:each="com:${art.commentList}">
+			コメント者名：<span th:text="${com.name}"></span><br>
+			コメント内容：<br>
+			<span th:text="${com.content}"></span><br>
+			<br>
+		</div>
+		<form th:action="@{/bbs/insert-comment}" method="post">
+			<input type="hidden" name="articleId" th:value="${art.id}">
+			名前：<br>
+			<input type="text" name="name"><br>
+			コメント：<br>
+			<textarea name="content" rows="10" cols="30"></textarea><br>
+			<button>コメント投稿</button>
+		</form>
+		<hr>
+	</div>
 </body>
 </html>
